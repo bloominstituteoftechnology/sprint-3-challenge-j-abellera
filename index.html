@@ -58,7 +58,48 @@
       // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
-
+      constructor(...nums) {
+        this.ints = nums;
+      }
+      getAll() {return this.ints};
+      getEvens() {
+        const even = [];
+        this.ints.forEach(num => num % 2 === 0 ? even.push(num) : null);
+        return even;
+      }
+      getNegatives() {
+        const negative = [];
+        this.ints.forEach(num => num < 0 ? negative.push(num) : null);
+        return negative;
+      }
+      getAllSquared() {
+        const squared = [];
+        this.ints.forEach(num => squared.push(num ** 2));
+        return squared;
+      }
+      pop() {
+        return this.ints.pop()
+      }
+      push(int) {
+        this.ints.push(int);
+        return this.ints;
+      }
+      getEveryNth(n) {
+        const nth = [];
+        for(let i = 0; i < this.ints.length; i += n) {
+          if(i === 0) {
+            nth.push(this.ints[i]);
+          } else {
+            nth.push(this.ints[i]);
+          }
+        }
+        return nth;
+      }
+      getAllReversed() {
+        const reversed = [];
+        this.ints.forEach(num => reversed.unshift(num));
+        return reversed;
+      }
     }
 
     // 👉 CHALLENGE 2 NerfGun
@@ -76,7 +117,26 @@
       //      * When engaging the safety, return "Safety enabled!"
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
-
+        constructor(projectiles) {
+          this.limit = projectiles;
+          this.magazine = projectiles;
+          this.safety = true;
+        }
+        shoot() {
+          return this.magazine !== 0 && this.safety === false ? (this.magazine--, 'Bang!') : 'Click!';
+        }
+        reload(num) {
+          return num < 1 || typeof(num) !== 'number'
+          ? 'Error reloading!'
+          : this.magazine + num > this.limit
+          ? (this.magazine = this.limit, `${this.magazine} projectiles left!`)
+          : (this.magazine += num, `${this.magazine} projectiles left!`)
+        }
+        toggleSafety() {
+          return this.safety === true
+          ? (this.safety = false, 'Safety disabled!')
+          : (this.safety = true, 'Safety enabled!')
+        }
     }
 
     // 👉 CHALLENGE 3 EBook
@@ -95,7 +155,22 @@
       //    ebook.next() // returns null
       // 🌟 HINT: remember about the `slice` method of arrays
       // ❗ Feel free to implement `back`, although this is not required nor graded
-
+      constructor(str, char) {
+        this.text = str;
+        this.perPage = char;
+        this.page = 0;
+      }
+      next() {
+        if(this.page === 0) {
+          let current = this.text.slice(0, this.perPage);
+          this.page += 1;
+          return current;
+        } else {
+          let current = this.text.slice((this.page * this.perPage), (this.page * this.perPage) + this.perPage)
+          this.page += 1;
+          return current ? current : null
+        }
+      }
     }
 
     // 👉 CHALLENGE 4 AntFarm
@@ -130,7 +205,29 @@
       //      console.log(list) // prints ["a"]
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
-
+      constructor(...strings) {
+        this.ants = strings.map(ant => {
+          return ant = {name: ant, health: 100};
+        })
+      }
+      work() {
+        let number = this.ants.length
+        this.ants.map(theAnt => theAnt.health -= 20);
+        if(this.ants.length === 0)
+          return 'No ants here. Did you work them to death?'
+        this.ants = this.ants.filter(ant => ant.health > 0);
+        return `${number} ants starting work!`;
+      }
+      feed(name) {
+        let found = false;
+        for(let i = 0; i < this.ants.length; i++) {
+          if(this.ants[i].name === name) {
+            found = true;
+            this.ants[i].health += 15;
+          }
+        }
+        return found !== true ? `${name} not found!` : 'Yum!'
+      }
     }
 
     // 🧪 TESTS, do not make any changes below this line ===================
